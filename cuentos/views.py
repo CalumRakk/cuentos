@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from .models import Cuento
 
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 
@@ -35,6 +35,19 @@ def signup(request: HttpRequest):
         return render(request, "signup.html", {"form": form, "msg": "Las contraseñas no son iguales"})
 
 
+def signin(request: HttpRequest):
+    authentication = AuthenticationForm
+    if request.method == "GET":
+        return render(request, "login.html", {"form": authentication})
+
+    username = request.POST["username"]
+    password = request.POST["password"]
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return redirect("cuentos")
+    return render(request, "login.html", {"form": authentication, "msg": "Datos erroneos"})
+    
 def signout(request):
     logout(request)
     return redirect("home")
