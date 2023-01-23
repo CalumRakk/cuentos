@@ -1,0 +1,11 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<ul>
+    {% for cuento in cuentos %}
+        <li>{{cuento.title }} </li>
+        
+    {% endfor %}
+</ul>
+{% endblock content %}

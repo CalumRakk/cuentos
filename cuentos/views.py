@@ -1,8 +1,45 @@
 
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpRequest
+from .models import Cuento
+
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.db import IntegrityError
 
 # Create your views here.
 
-def home(request):
-    return HttpResponse("hola")
+
+def signup(request: HttpRequest):
+    print(request.method)
+    form = UserCreationForm
+    if request.method == "GET":
+        return render(request, "signup.html", {"form": form})
+
+    elif request.method == "POST":
+        username = request.POST["username"]
+        password1 = request.POST["password1"]
+        password2 = request.POST["password2"]
+
+        if password1 == password2:
+            try:
+                user = User.objects.create_user(
+                    username=username,
+                    password=password1)
+                user.save()
+                login(request, user)
+                return redirect("cuentos")
+            except IntegrityError:
+                return render(request, "signup.html", {"form": form, "msg": "El usuario ya existe"})
+        return render(request, "signup.html", {"form": form, "msg": "Las contraseñas no son iguales"})
+
+
+def signout(request):
+    logout(request)
+    return redirect("home")
+
+
+def detail(request):
+    cuentos = Cuento.objects.all()
+    return render(request, "detail.html", {"cuentos": cuentos})
