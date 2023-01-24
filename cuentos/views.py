@@ -53,6 +53,12 @@ def signout(request):
     return redirect("home")
 
 
-def detail(request):
+def detail(request, cuento_id):
+    print(cuento_id)
+    cuento = Cuento.objects.get(pk=cuento_id)   
+    cuento.content= cuento.content.split("\n")
+    return render(request, "detail.html", {"cuento": cuento})
+
+def index(request):
     cuentos = Cuento.objects.all()
-    return render(request, "detail.html", {"cuentos": cuentos})
+    return render(request, "index.html", {"cuentos": cuentos})

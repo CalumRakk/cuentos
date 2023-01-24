@@ -1,16 +1,13 @@
 
+
 {% extends "base.html" %}
 
-
-
 {% block content %}
-
-<h1>Cuentos</h1>
-
-<ul>
-    {% for cuento in cuentos %}
-        <li>{{cuento.title }} </li>
-        
+    <h1>{{cuento.title }}</h1>
+    
+    {% for paragraph in cuento.content %}
+        <p>{{paragraph}}</p>
+    
     {% endfor %}
-</ul>
+
 {% endblock content %}
