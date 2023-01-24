@@ -29,7 +29,7 @@ def signup(request: HttpRequest):
                     password=password1)
                 user.save()
                 login(request, user)
-                return redirect("cuentos")
+                return redirect("/")
             except IntegrityError:
                 return render(request, "signup.html", {"form": form, "msg": "El usuario ya existe"})
         return render(request, "signup.html", {"form": form, "msg": "Las contraseñas no son iguales"})
@@ -45,20 +45,22 @@ def signin(request: HttpRequest):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        return redirect("cuentos")
+        return redirect("/")
+
     return render(request, "login.html", {"form": authentication, "msg": "Datos erroneos"})
     
 def signout(request):
     logout(request)
-    return redirect("home")
+    return redirect("/")
 
 
 def detail(request, cuento_id):
     print(cuento_id)
-    cuento = Cuento.objects.get(pk=cuento_id)   
+    cuento = Cuento.objects.get(pk=cuento_id) 
+    cuento.content= cuento.content.replace("-", "─ ")  
     cuento.content= cuento.content.split("\n")
     return render(request, "detail.html", {"cuento": cuento})
 
-def index(request):
+def results(request):
     cuentos = Cuento.objects.all()
     return render(request, "index.html", {"cuentos": cuentos})
