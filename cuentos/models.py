@@ -32,5 +32,7 @@ class Comentario(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-class Favorito(models.Model):
+class Favorite(models.Model):
     cuento = models.ForeignKey(Cuento, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)

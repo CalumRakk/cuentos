@@ -2,18 +2,73 @@
 
 {% extends "base.html" %}
 
+
 {% block content %}
 
     <div class="center-text">
 
         <h1>{{cuento.title }}</h1>
+        <div> {{cuento.author.name}} <div>
+        <hr>
         {% for paragraph in cuento.content %}
             <p>{{paragraph}}</p>
     
         {% endfor %}
-        
+        <hr>        
+            <form method="post" id="my-form">
+                {% csrf_token %}
+                <input type="hidden" name="cuento_id" value="{{ cuento.id }}">
+                {% if is_favorite %}
+                <button id="favorite-button" class="favorite-button active">
+                    <i class="fa fa-heart child"></i>
+                    <i class="fa fa-heart"></i>
+                    <i class="fa fa-heart child"></i>           
+                </button>
+
+                {% else %}
+                    <button id="favorite-button" class="favorite-button">
+                        <i class="fa fa-heart child"></i>
+                        <i class="fa fa-heart"></i>
+                        <i class="fa fa-heart child"></i>           
+                    </button>
+                {% endif %}
+            </form>
+
+        <p id="test">HOLA</p>
+
     </div>
 
+    <script>
+        var form = document.getElementById("my-form");
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            var formData = new FormData(form);
+            fetch("{% url 'cuentos:favorite' cuento.id %}", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error("Request failed");
+            })
+            .then(data => {                
+                if (data.is_login==false){
+                    alert("Necitas login");
+                    return false
+                }else{
+                    var element = document.getElementById("favorite-button");
+                    element.classList.toggle("active");
+                }
+
+            })
+            .catch(error => {
+                alert("error")
+            });
+        });
+
+    </script>
 
 {% endblock content %}
 
