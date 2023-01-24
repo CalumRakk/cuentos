@@ -9,7 +9,7 @@
 
 <ul>
     {% for cuento in cuentos %}
-        <li>{{cuento.title }} </li>
+        <li><a href="{% url 'cuentos:detail' cuento.id %}"> {{cuento.title }} </a> </li>
         
     {% endfor %}
 </ul>

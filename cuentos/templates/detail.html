@@ -3,11 +3,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{cuento.title }}</h1>
+
+    <div class="center-text">
+
+        <h1>{{cuento.title }}</h1>
+        {% for paragraph in cuento.content %}
+            <p>{{paragraph}}</p>
     
-    {% for paragraph in cuento.content %}
-        <p>{{paragraph}}</p>
-    
-    {% endfor %}
+        {% endfor %}
+        
+    </div>
+
 
 {% endblock content %}
+
