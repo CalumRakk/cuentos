@@ -22,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-c04+^c_-pt32n*n@ke=@#+txs)#634@0g&n0b%n3in8u%p5!e)')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
+DEBUG = False if os.environ.get('DEBUG') else True
 
 ALLOWED_HOSTS = []
 
@@ -83,18 +83,16 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
+    }
 
 
 # Password validation
@@ -134,8 +132,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # Following settings only make sense on production and may break development environments.
 
-if not DEBUG:
-
+if DEBUG is False:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
