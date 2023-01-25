@@ -73,8 +73,8 @@ def detail(request: HttpRequest, cuento_id):
     return render(request, "detail.html", {"cuento": cuento, "is_favorite": is_favorite})
 
 
-def favorite_update(request: HttpRequest, cuento_id):  
-    user= request.user  
+def favorite_update(request: HttpRequest, cuento_id):
+    user= request.user
     is_favorite= False
     is_login= user.is_authenticated      
     if request.method=="POST":
@@ -94,6 +94,10 @@ def favorite_update(request: HttpRequest, cuento_id):
 
 
 def results(request):
+    cuentos = Cuento.objects.all()
+    return render(request, "cuentos.html", {"cuentos": cuentos})
+    
+def index(request):
     cuentos = Cuento.objects.all()
     return render(request, "index.html", {"cuentos": cuentos})
 

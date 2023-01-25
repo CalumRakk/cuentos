@@ -10,7 +10,8 @@ class Author(models.Model):
     country = models.CharField(max_length=255)
     date = models.CharField(max_length=10,
                             validators=[validate_custom_date_format])
-
+    def __str__(self):
+        return self.name
 
 class Cuento(models.Model):
     title = models.CharField(max_length=255)

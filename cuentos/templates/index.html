@@ -5,12 +5,11 @@
 
 {% block content %}
 
-<h1>Cuentos</h1>
-
-<ul>
-    {% for cuento in cuentos %}
-        <li><a href="{% url 'cuentos:detail' cuento.id %}"> {{cuento.title }} </a> </li>
-        
-    {% endfor %}
-</ul>
+    <main role="main" class="inner cover">
+        <h1 class="cover-heading">Resumen</h1>
+        <p class="lead">Bienvenido a nuestra página de cuentos clásicos en español. Aquí encontrarás una selección de relatos de los mejores autores de todos los tiempos, quienes a pesar de haber fallecido, sus historias siguen vivas a través de sus escritos. </p>
+        <p class="lead">
+        <a href="#" class="btn btn-lg btn-secondary">Conoce Más</a>
+        </p>
+    </main>
 {% endblock content %}
